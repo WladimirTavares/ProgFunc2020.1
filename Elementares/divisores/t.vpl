@@ -1,0 +1,25 @@
+Case = Test1
+input=24
+output=[1,2,3,4,6,8,12,24]
+grade reduction = 100%
+
+Case = Test2
+input=12
+output=[1,2,3,4,6,12]
+grade reduction = 100%
+
+Case = Test3
+input=74
+output=[1,2,37,74]
+grade reduction = 100%
+
+Case = Test1
+input=457
+output=[1,457]
+grade reduction = 100%
+
+Case = Test1
+input=15
+output=[1,3,5,15]
+grade reduction = 100%
+
