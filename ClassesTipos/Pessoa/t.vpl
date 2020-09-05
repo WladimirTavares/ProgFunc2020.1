@@ -1,0 +1,22 @@
+["Joao" tem 20 anos e ganha de salario 2500.0,"Ana" tem 30 anos e ganha de salario 2560.0,"Deigela" tem 23 anos e ganha de salario 3000.0,"Rafaela" tem 22 anos e ganha de salario 2800.0]
+["Ana" tem 30 anos e ganha de salario 2560.0,"Deigela" tem 23 anos e ganha de salario 3000.0,"Joao" tem 20 anos e ganha de salario 2500.0,"Rafaela" tem 22 anos e ganha de salario 2800.0]
+["Joao" tem 20 anos e ganha de salario 2500.0,"Rafaela" tem 22 anos e ganha de salario 2800.0,"Deigela" tem 23 anos e ganha de salario 3000.0,"Ana" tem 30 anos e ganha de salario 2560.0]
+["Joao" tem 20 anos e ganha de salario 2500.0,"Ana" tem 30 anos e ganha de salario 2560.0,"Rafaela" tem 22 anos e ganha de salario 2800.0,"Deigela" tem 23 anos e ganha de salario 3000.0]
+Case = 00
+input=[("Joao",20,2500),("Ana",30,2560),("Deigela",23,3000),("Rafaela",22,2800)]
+output=["Joao" tem 20 anos e ganha de salario 2500.0,"Ana" tem 30 anos e ganha de salario 2560.0,"Deigela" tem 23 anos e ganha de salario 3000.0,"Rafaela" tem 22 anos e ganha de salario 2800.0]
+["Ana" tem 30 anos e ganha de salario 2560.0,"Deigela" tem 23 anos e ganha de salario 3000.0,"Joao" tem 20 anos e ganha de salario 2500.0,"Rafaela" tem 22 anos e ganha de salario 2800.0]
+["Joao" tem 20 anos e ganha de salario 2500.0,"Rafaela" tem 22 anos e ganha de salario 2800.0,"Deigela" tem 23 anos e ganha de salario 3000.0,"Ana" tem 30 anos e ganha de salario 2560.0]
+["Joao" tem 20 anos e ganha de salario 2500.0,"Ana" tem 30 anos e ganha de salario 2560.0,"Rafaela" tem 22 anos e ganha de salario 2800.0,"Deigela" tem 23 anos e ganha de salario 3000.0]
+grade reduction = 100%
+["Carlos Eduardo" tem 20 anos e ganha de salario 2500.0,"Joao Victor" tem 30 anos e ganha de salario 2560.0,"Bruno" tem 23 anos e ganha de salario 3000.0,"Paula" tem 22 anos e ganha de salario 2800.0]
+["Bruno" tem 23 anos e ganha de salario 3000.0,"Carlos Eduardo" tem 20 anos e ganha de salario 2500.0,"Joao Victor" tem 30 anos e ganha de salario 2560.0,"Paula" tem 22 anos e ganha de salario 2800.0]
+["Carlos Eduardo" tem 20 anos e ganha de salario 2500.0,"Paula" tem 22 anos e ganha de salario 2800.0,"Bruno" tem 23 anos e ganha de salario 3000.0,"Joao Victor" tem 30 anos e ganha de salario 2560.0]
+["Carlos Eduardo" tem 20 anos e ganha de salario 2500.0,"Joao Victor" tem 30 anos e ganha de salario 2560.0,"Paula" tem 22 anos e ganha de salario 2800.0,"Bruno" tem 23 anos e ganha de salario 3000.0]
+Case = 00
+input=[("Carlos Eduardo",20,2500),("Joao Victor",30,2560),("Bruno",23,3000),("Paula",22,2800)]
+output=["Carlos Eduardo" tem 20 anos e ganha de salario 2500.0,"Joao Victor" tem 30 anos e ganha de salario 2560.0,"Bruno" tem 23 anos e ganha de salario 3000.0,"Paula" tem 22 anos e ganha de salario 2800.0]
+["Bruno" tem 23 anos e ganha de salario 3000.0,"Carlos Eduardo" tem 20 anos e ganha de salario 2500.0,"Joao Victor" tem 30 anos e ganha de salario 2560.0,"Paula" tem 22 anos e ganha de salario 2800.0]
+["Carlos Eduardo" tem 20 anos e ganha de salario 2500.0,"Paula" tem 22 anos e ganha de salario 2800.0,"Bruno" tem 23 anos e ganha de salario 3000.0,"Joao Victor" tem 30 anos e ganha de salario 2560.0]
+["Carlos Eduardo" tem 20 anos e ganha de salario 2500.0,"Joao Victor" tem 30 anos e ganha de salario 2560.0,"Paula" tem 22 anos e ganha de salario 2800.0,"Bruno" tem 23 anos e ganha de salario 3000.0]
+grade reduction = 100%

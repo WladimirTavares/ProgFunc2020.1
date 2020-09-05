@@ -1,0 +1,30 @@
+15 de Fevereiro de 2002
+16 de Marco de 2001
+False
+Case = 00
+input=15 01 2002
+16 02 2001
+output=15 de Fevereiro de 2002
+16 de Marco de 2001
+False
+grade reduction = 100%
+26 de Fevereiro de 2005
+23 de Marco de 2003
+False
+Case = 00
+input=26 01 2005
+23 02 2003
+output=26 de Fevereiro de 2005
+23 de Marco de 2003
+False
+grade reduction = 100%
+26 de Dezembro de 2011
+26 de Novembro de 2002
+False
+Case = 00
+input=26 11 2011
+26 10 2002
+output=26 de Dezembro de 2011
+26 de Novembro de 2002
+False
+grade reduction = 100%
