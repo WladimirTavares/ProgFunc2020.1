@@ -15,6 +15,34 @@
 - [somaQuadrados](Elementares/somaQuadrados/Readme.md)
 - [zeroUm](Elementares/zeroUm/Readme.md)
 
+### Listas
+
+- [abundantes](Listas/abundantes/Readme.md)
+- [capitalises](Listas/abundantes/Readme.md)
+- [interseccao](Listas/interseccao/Readme.md)
+- [todosPrefixos](Listas/todosPrefixos/Readme.md)
+
+
+
+
+
+### Definições Recursivas
+
+
+### Funções de Alta Ordem
+
+- [concatenaFold](AltaOrdem/concatenaFold/Readme.md)
+- [duplicarFold](AltaOrdem/duplicarFold/Readme.md)
+- [filtraAplicaFold](AltaOrdem/filtraAplicaFold/Readme.md)
+- [inverteFold](AltaOrdem/inverteFold/Readme.md)
+- [mapFold](AltaOrdem/mapFold/Readme.md)
+
+
+
+
+
+
+
 
 ### Módulos
 
@@ -23,4 +51,13 @@
 - [numeroTrocas](Modulos/numeroTrocas/Readme.md)
 - [transformaAnagrama](Modulos/transformaAnagrama/Readme.md)
 
+
+### Classes de Tipos
+
+- [complex](ClassesTipos/Complex/Readme.md)
+- [Date](ClassesTipos/Date/Readme.md)
+- [Matrix](ClassesTipos/Matrix/Readme.md)
+- [PedraPapelTesoura](ClassesTipos/PedraPapelTesoura/Readme.md)
+- [Pessoa](ClassesTipos/Pessoa/Readme.md)
+- [Polinomio](ClassesTipos/Polinomio/Readme.md)
 
