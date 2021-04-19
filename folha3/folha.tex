@@ -1,0 +1,327 @@
+\documentclass[twocolumn,a4paper,7pt]{article}
+%\documentclass[a4paper,draft]{article}
+%\documentclass[a4paper]{article}
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{charter} % nova fonte
+\usepackage{indentfirst} % indenta o 1o parágrafo
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{multicol}
+\usepackage{listings}
+
+\setlength{\multicolsep}{4.0pt plus 2.0pt minus 1.5pt}% 50% of original values
+
+% unidade usada para desenhar as figuras
+\setlength{\unitlength}{1cm}
+%\linethickness{1.5pt}
+
+\newcommand{\remove}[1]{}%{#1}
+\newtheorem{theorem}{Teorema}
+
+% formatar margens quando utilizar 2 colunas
+%\addtolength{\evensidemargin}{-1.5cm}\addtolength{\oddsidemargin}{-1.5cm}\addtolength{\textwidth}{2.7cm}
+\addtolength{\evensidemargin}{-2cm}\addtolength{\oddsidemargin}{-2cm}\addtolength{\textwidth}{3.7cm}
+
+\addtolength{\topmargin}{-4.0cm}
+\addtolength{\textheight}{7.0cm}
+
+%\setlength{\parskip}{\baselineskip} % aumenta espaço entre parágrafos
+\setlength{\parskip}{0em}
+
+\hyphenpenalty=100000
+% convert probs_np_completos.gif probs_np_completos.eps
+% ps2pdf -sPAPERSIZE=a4 np.ps
+
+\begin{document}
+\title{Programação Funcional \\ Folha de Exercícios 03 \\ Funções de Alta ordem }
+\author{Prof. Wladimir Araújo Tavares }
+\date{}
+\maketitle
+%\tableofcontents
+
+%\tiny
+\scriptsize
+%\footnotesize
+%\small
+%\normalsize
+%\large
+%\Large
+%\LARGE
+%\huge
+%\Huge
+
+%\noindent
+%Aluno: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ $~~$ 20/02/2013 \\
+
+\begin{enumerate}\itemsep-.3em
+
+\item Escreva a função \texttt{divideMedia :: [Double] -> ([Double],[Double])}
+tal que (\texttt{divideMedia xs}) devolve o par $(ys,zs)$, onde
+$ys$ é formado pelos elementos de $xs$ estritamente
+menores que a média, enquanto $zs$ é formado pelos elementos de
+$xs$ estritamente maiores que a média. Por exemplo,
+
+\texttt{divideMedia [6,7,2,8,6,3,4] == ([2.0,3.0,4.0],[6.0,7.0,8.0,6.0])}
+
+Dica: defina a função media e use a função \texttt{filter :: (a->Bool) -> [a] -> [a]}.
+
+\item %1
+A função do prelúdio scanl é uma variante do foldl que produz a lista com
+os valores acumulados:
+
+\texttt{scanl f z [x1, x2, ...] = [z, f z x1, f (f z x1) x2, ...]}
+
+Por exemplo:
+
+\texttt{scanl (+) 0 [1, 2, 3] = [0, 0 + 1, 0 + 1 + 2, 0 + 1 + 2 + 3] = [0, 1, 3, 6]}
+
+\begin{enumerate}
+\item Use a função \texttt{scanl} para definir a função \texttt{fatAcc n} que retorna uma lista de com \texttt{$[1!,2!,\ldots,n!]$}
+
+\texttt{fatAcc 10 == [1,2,6,24,120,720,5040,40320,362880,3628800]}
+
+\item Use a função fatAcc para definir a função \texttt{fatorial}.
+\end{enumerate}
+
+\item
+Escreva uma função \texttt{partir :: Int -> [a] -> [[a]]} tal que partir n de
+decompõe uma lista em sub-listas cuja concatenação dá a lista original e tal que
+cada sub-lista tem comprimento n (exceto, possivelmente, a última).
+
+Exemplo:\texttt{partir 5 "abdefghijkl" = ["abde", "fghij", "kl"]}
+
+Dica: use a função \texttt{take} , \texttt{drop} e \texttt{(:)}
+
+
+
+\item Defina uma função \texttt{group} em Haskell que recebe como argumento uma lista l de
+valores e agrupa os valores repetidos, retornando uma lista de pares nos quais
+o primeiro componente é um valor de l e o segundo é o número de repetições
+consecutivas desse valor.
+
+Por exemplo:
+
+\texttt{group [1,1,2,2,2,3,4,5,5,1] == [(1,2),(2,3),(3,1),(4,1),(5,2),(1,1)]}
+
+\begin{enumerate}
+\item Usando a função takeWhile, encontre uma sub-cadeia inicial que contém todos os números iguais.
+\item Usando a função dropWhile, remova uma subcadeia inicial que contém todos os números iguais.
+\item Escreva uma definição recursiva para a função group.
+\end{enumerate}
+
+\item
+Considere a seguinte definição de função em Haskell:
+
+
+\texttt{until p f x = if p x then x else until p f (f x)}
+\begin{enumerate}
+\item Qual é o tipo da função until?
+\item Qual é o resultado da avaliação da expressão until ($<10$) square 2?
+\item Use a função until para definir uma função que, dado um string s, retorne o string obtido removendo-se
+todos os caracteres iguais a branco que ocorrem no início de s.
+\end{enumerate}
+
+\item Defina a função \texttt{relacionados :: (a->a->Bool) -> [a] -> Bool}
+tal que (\texttt{relacionados p xs}) verifica se todo par
+$(x,y)$ de elementos consecutivos de $xs$ satisfazem o predicado $p$. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+relacionados (<) [2,3,7,9] = True
+relacionados (<) [2,3,1,9] = False
+\end{lstlisting}
+
+\begin{enumerate}
+\item Escreva uma definição recursiva para \texttt{relacionadosRec}.
+\item Escreva uma definição usando compreensão de listas \texttt{relacionadosComp} com a função \texttt{and}.
+\end{enumerate}
+
+\item Defina a função \texttt{agrupa :: Eq a => [[a]] -> [[a]]}
+tal que (\texttt{agrupa xss}) é uma lista de listas obtidas agrupando os primeiros
+elementos, os segundos elementos, ... de forma que o comprimento das listas dos
+resultados seja igual a lista mais curta de $xss$. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+agrupa [[1..6],[7..9],[10..20]] == [[1,7,10],[2,8,11],[3,9,12]]
+agrupa [] == []
+\end{lstlisting}
+
+
+\item O que a função mystery faz?
+\begin{lstlisting}[language=Haskell]
+mystery xs = foldr (++) [] (map sing xs)
+sing x = [x]
+\end{lstlisting}
+
+
+\item Escreva a definição da função \texttt{concatenaFold :: [[a]] -> [a]} que concatena uma lista de listas usando a função \texttt{foldr::(a -> b -> b) -> b -> [a] -> b }
+
+Dica: Considere a seguinte definição recursiva:
+\begin{lstlisting}[language=Haskell]
+concatena :: [[a]] -> [a]
+concatena [] = []
+concatena (x:xs) = x ++ concatena xs
+\end{lstlisting}
+
+\item
+Escreva a definição da função \texttt{inverteFold :: [a] -> [a]} que inverte uma lista usando a função \texttt{foldr:(a -> b -> b) -> b -> [a] -> b}
+
+Dica: Considere a seguinte definição recursiva:
+\begin{lstlisting}[language=Haskell]
+inverte :: [a] -> [a]
+inverte [] = []
+inverte xs = (last xs):inverte (init xs)
+\end{lstlisting}
+
+\item
+Escreva a definição da função \texttt{tamanhoFold ::  [a] -> Int} que retorna o tamanho de uma lista usando a função \texttt{foldr:(a -> b -> b) -> b -> [a] -> b}.
+
+Dica: Considere a seguinte definição recursiva:
+\begin{lstlisting}[language=Haskell]
+tamanho ::  [a] -> Int
+tamanho []     = 0
+tamanho (x:xs) = 1 + length xs
+\end{lstlisting}
+
+
+\item
+Escreva a definição da função \texttt{elementoFold a :: [a] -> Bool} que determina se um elemento pertence ou não a uma lista usando a função \texttt{foldr:(a -> b -> b) -> b -> [a] -> b}.
+
+Dica: Considere a seguinte definição recursiva:
+\begin{lstlisting}[language=Haskell]
+elemento :: Eq a => a -> [a] -> Bool
+elemento y []     = False
+elemento y (x:xs) = (x == y) || elemento y xs
+\end{lstlisting}
+
+
+
+\item Escreva uma função \texttt{paridade :: [Bool] -> Bool} que calcule a paridade de uma sequência de bits (representados como uma lista de boleanos): se o número de bits de valor True for ímpar então a paridade é True, caso contrário é False.
+
+Exemplo: \texttt{paridade [True,True, False,True] = True}
+
+\begin{enumerate}
+\item Escreva uma definição recursiva para a função paridade.
+\item Escreva uma definição usando o foldr para a função paridadeFold.
+\end{enumerate}
+
+\item A função \texttt{duplicar :: String -> String} repete duas vezes cada vogal (letras 'a', 'e', 'i', 'o', 'u' minúsculas ou maiúsculas) numa cadeia de carateres; os outros carateres devem ficar inalterados.
+
+Exemplo: \texttt{duplicar "Ola, mundo!" == "OOlaa, muundoo!"}
+
+Dica: Crie uma lista com as vogais minúsculas e maiúsculas.
+
+\begin{enumerate}
+\item Escreva uma definição recursiva para a função duplicar.
+\item Escreva uma definição usando o foldr para a função duplicarFold que faz o mesmo que duplicar.
+\end{enumerate}
+
+\item Defina a função \texttt{filtraAplica :: (a->b) -> (a->Bool)->[a]->[b]}
+tal que (\texttt{filtraAplica f p xs}) é uma lista obtida
+aplicando a função f aos elementos de xs que satisfazem
+o predicado p. Por exemplo,
+
+\texttt{filtraAplica (4+) (<3) [1..7] => [5,6]}
+
+Defina a função:
+
+\begin{enumerate}
+\item Usando compreensão de listas.
+\item Usando a função map e filter.
+\item Usando recursão
+\item Usando a função foldr
+\end{enumerate}
+
+
+\item
+Considere um polinômio $P(X) = c_0 + c_1z + \ldots + c_nz^n$ representado
+pela lista dos seus coeficientes $[c0, c1, \ldots ; c_n]$. Podemos calcular o valor do
+polinômio num ponto de forma eficiente usando a forma de Horner :
+\begin{equation}
+P(z) = c0 + c_1z + \ldots + c_nz_n = c_0 + z * (c_1 + z * (\ldots +  z* (c_{n-1} + z * c_n) \ldots ))
+\end{equation}
+
+Note que usando a expressão não necessitamos de calcular potências: para
+calcular o valor dum polinômio de grau n usamos apenas n adições e n produtos.
+
+Complete a seguinte definição recursiva tal que horner cs z calcula o valor
+do polinômio com lista de coeficientes cs no ponto z usando a forma de Horner.
+
+\begin{lstlisting}[language=Haskell]
+horner :: [Double] -> Double -> Double
+horner [] z = 0
+horner (c:cs) z =
+\end{lstlisting}
+
+
+A forma de Horner também pode ser expressa como aplicação da função
+de ordem superior foldr . Complete a definição seguinte de forma a que a
+igualdade seja correta.
+
+\texttt{horner cs z = foldr \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_  \_\_\_\_\_\_ cs }
+
+
+\item
+Defina a função \texttt{mapFold f :: [a] -> [a]} usando a função \texttt{foldr}.
+
+\item
+Define a função \texttt{filterFold p :: [a] -> [a]} usando a função \texttt{foldr}.
+
+
+\item
+As funções \texttt{foldl1} e \texttt{foldr1} do prelúdio-padrão são variantes de foldl e foldr que só estão definidas para listas com pelo menos um elemento (i.e. não-vazias).\texttt{foldl1} e \texttt{foldr1} têm apenas dois argumentos (uma operação de agregação e uma
+lista) e o seu resultado é dado pelas equações seguintes.
+
+\texttt{$foldl1 (\oplus) [x_1, \ldots , x_n] = ( \ldots (x_1 \oplus x_2) \oplus x_3 \ldots) \oplus x_n$}
+
+\texttt{$foldr1 (\oplus) [x_1, \ldots , x_n] = x_1 \oplus ( \ldots (x_{n-1} \oplus x_n) \ldots)$}
+
+Defina as funções \texttt{maximoFold, minimoFold :: Ord a => [a] -> a} do prelúdio-padrão (que calculam, respectivamente, o maior e o menor elemento duma lista não-vazia) usando \texttt{foldl1} e \texttt{foldr1} .
+
+
+\item Escreva definição recursiva da função \texttt{insert :: Ord a => a -> [a] -> [a]} para inserir um elemento numa lista ordenada na posição
+correta de forma a manter a ordenação.
+
+Exemplo: \texttt{insert 2 [0, 1, 3, 5] == [0, 1, 2, 3, 5]}
+
+\item Usando a função insert, escreva uma definição também recursiva da função
+\texttt{insertSort :: Ord a => [a] -> [a]} que implementa ordenação pelo método de inserção:
+
+\begin{itemize}
+  \item a lista vazia já está ordenada;
+  \item para ordenar uma lista não vazia, recursivamente ordenamos a cauda e inserimos a cabeça na posição correta.
+\end{itemize}
+
+\item Defina a função \texttt{insertSortFold :: Ord a => [a] -> [a]} que ordena uma lista pelo método de inserção usando a função foldr e insert.
+
+
+\item A função \texttt{scanSum :: [Int] -> [Int]} recebe uma lista de inteiros e retorna uma lista com as somas das somas acumuladas. Por exemplo,
+
+\texttt{scanSum [1,2,3,4] == [1,3,6,10]}
+
+\texttt{scanSum [1,3,5,7] == [1,4,9,16]}
+
+\begin{enumerate}
+
+\item Defina uma função \texttt{prefixos :: [Int] -> [[Int]]} que retorna uma lista de prefixos de todos os prefixos de uma lista.
+
+\texttt{prefixos [1,2,3,4] == [ [1], [1,2], [1,2,3], [1,2,3,4] ]}
+
+\begin{lstlisting}[language=Haskell]
+prefixos []  = ________
+prefixos xs  = prefixos  ______________________ ++ [xs]
+\end{lstlisting}
+
+\item  Defina scanSum usando compreensão de listas com o auxílio da função prefixos.
+
+\item Defina a função scanSum recursivamente. Dica: use uma função auxiliar
+
+\end{enumerate}
+
+
+\end{enumerate}
+
+\end{document}	

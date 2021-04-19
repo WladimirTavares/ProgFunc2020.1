@@ -1,5 +1,15 @@
 #  Programação Funcional
 
+## Folhas de Exercícios
+
+* [Funções do Prelude e Compreensão
+de Listas](folha1/folha.pdf)
+* [Recursão](folha2/folha.pdf)
+* [Funções de Alta ordem](folha3/folha.pdf)
+* [Avaliação Preguiçosa](folha4/folha.pdf)
+* [Definição de Tipos](folha5/folha.pdf)
+* [Tipo Abstrato de Dados](folha6/folha.pdf)
+* [Entrada e Saı́da](folha7/folha.pdf)
 
 ### Funções Elementares
 

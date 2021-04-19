@@ -1,0 +1,288 @@
+\documentclass[twocolumn,a4paper,7pt]{article}
+%\documentclass[a4paper,draft]{article}
+%\documentclass[a4paper]{article}
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{charter} % nova fonte
+\usepackage{indentfirst} % indenta o 1o parágrafo
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{multicol}
+\usepackage{listings}
+
+\setlength{\multicolsep}{4.0pt plus 2.0pt minus 1.5pt}% 50% of original values
+
+% unidade usada para desenhar as figuras
+\setlength{\unitlength}{1cm}
+%\linethickness{1.5pt}
+
+\newcommand{\remove}[1]{}%{#1}
+\newtheorem{theorem}{Teorema}
+
+% formatar margens quando utilizar 2 colunas
+%\addtolength{\evensidemargin}{-1.5cm}\addtolength{\oddsidemargin}{-1.5cm}\addtolength{\textwidth}{2.7cm}
+\addtolength{\evensidemargin}{-2cm}\addtolength{\oddsidemargin}{-2cm}\addtolength{\textwidth}{3.7cm}
+
+\addtolength{\topmargin}{-4.0cm}
+\addtolength{\textheight}{7.0cm}
+
+%\setlength{\parskip}{\baselineskip} % aumenta espaço entre parágrafos
+\setlength{\parskip}{0em}
+
+\hyphenpenalty=100000
+% convert probs_np_completos.gif probs_np_completos.eps
+% ps2pdf -sPAPERSIZE=a4 np.ps
+
+\begin{document}
+\title{Programação Funcional \\ Folha de Exercícios 01 \\ Funções do Prelude e Compreensão de Listas }
+\author{Prof. Wladimir Araújo Tavares }
+\date{}
+\maketitle
+%\tableofcontents
+
+%\tiny
+\scriptsize
+%\footnotesize
+%\small
+%\normalsize
+%\large
+%\Large
+%\LARGE
+%\huge
+%\Huge
+
+%\noindent
+%Aluno: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ $~~$ 20/02/2013 \\
+
+\begin{enumerate}\itemsep-.3em
+
+
+\item Defina cada uma das seguintes funções usando apenas funções pré-definidas do módulo Prelude:
+
+\begin{enumerate}
+  \item Defina a função interior tal que (\texttt{interior xs}) é uma lista obtida eliminando os extremos da lista xs. Por exemplo,
+
+      \texttt{interior [2,5,3,7,3] == [5,3,7]}
+  \item Defina a função final tal que (\texttt{final xs}) é uma lista formada pelos n elementos finais de xs. Por exemplo,
+
+      \texttt{final 3 [2,5,4,7,9,6] == [7,9,6]}
+
+  \item Defina uma função segmento tal que (segmento n m xs) é uma lista dos elementos de xs compreendidos entre as posições n e m. Por exemplo,
+
+      \texttt{segmento 2 3 [3,4,1,2,7,9,0] == [1,2]}
+
+    \item Defina uma função extremos tal que (extremos n xs) é uma lista formada pelos n primeiros elementos de xs e n finais elementos de xs. Por exemplo,
+
+        \texttt{extremos 3 [2,6,7,1,2,4,5,8,9,2,3] == [2,6,7,9,2,3]}
+
+    \item Escreva uma função \texttt{dotprod :: [Float] -> [Float] -> Float} para calcular o produto interno de dois vetores (representados como listas):
+
+    \texttt{$dotprod [x_1, \ldots , x_n] [y_1,\ldots , y_n] = x_1 * y_1 + \ldots + x_n * y_n = \sum_{i=1}^{n} x_i*y_i$}
+
+    Usando a função \texttt{zipWith} e \texttt{sum}.
+
+    \item Escreva a definição da função \texttt{elemento :: Eq a => a -> [a] -> Bool} que testa se uma valor ocorre em uma lista usando a função \texttt{any :: (a -> Bool) -> [a] -> Bool}. Por exemplo,
+
+    \texttt{any (==1) [1,2,3] == True}
+
+
+
+\end{enumerate}
+
+
+\item Defina as seguintes funções usando compreensão de listas:
+
+\begin{enumerate}
+  \item Defina a função \texttt{somaQuadrados :: Integer -> Integer} tal que somaQuadrados n é a soma dos quadrados dos n primeiros números, ou seja,
+      $1^2 + 2^2 + 3^2 + \ldots + n^2$. Por exemplo,
+
+      \texttt{somaQuadrados 3 == 14}
+
+    \item Defina a função \texttt{replica :: Int -> a -> [a]} tal que replica n xs é uma lista formada por n cópias do elemento x. Por exemplo,
+
+        \texttt{replica 3 True == [True, True, True]}
+
+\item Os triângulos aritméticos se formam da seguinte maneira:
+
+\begin{tabular}{llllll}
+1 & \\
+2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9 & 10 \\
+11 & 12 & 13 & 14 & 15 \\
+16 & 17 & 18 & 19 & 20 & 21\\
+\end{tabular}
+
+Defina uma função linha tal que linha n é a n-ésima linha do triângulo aritmético. Por exemplo,
+
+\texttt{linha 4 == [7,8,9,10]}
+
+\item Defina a função triângulo tal que triangulo n é um triângulo aritmético de altura n. Por exemplo,
+
+    \texttt{triangulo 3 == [ [1], [2,3], [4,5,6] ]}
+
+\item Defina uma função fatores tal que fatores n é uma lista formada pelos divisores de n. Por exemplo,
+
+    \texttt{fatores 6 == [1,2,3,6]}
+
+\item Um inteiro positivo é perfeito se ele é igual a soma dos seus fatores, excluindo ele mesmo. Por exemplo, 6 é igual 1 + 2 + 3. Defina a função \texttt{perfeitos :: Int -> [Int]} tal que (perfeitos n) é uma lista de todos os números perfeitos menores que n. Por exemplo,
+
+    \texttt{perfeitos 500 == [6,28,496]}
+
+\item Defina uma fatoresPrimos tal que fatoresPrimos n devolve uma lista de tuplas $(f,b)$ representando os fatores primos de $n$ onde $f$ é um fator primo de n e $b$ é o seu expoente. Todo número x, tal que $x \in \mathbb{N}$, pode ser escrito como o produto de potências de bases primas e expoentes naturais. Por exemplo, o número 33661743 pode ser reescrito na forma,
+
+\begin{equation}
+3361743 = 3^4 \times 7^3 \times 11^2 \nonumber
+\end{equation}
+
+Os números 3, 7 e 11 são denominados fatores primos de 3361743 e 4, 3 e 2 seus respectivas expoentes.)
+
+\textbf{PROT:}
+
+\texttt{factors :: (Integral a) => a -> [(a,a)]
+}
+
+\textbf{EX(S):}
+
+\texttt{factors 3361743 => [(3,4),(7,3),(11,2)]}
+
+
+\item \texttt{interseccao :: Eq a => [a] -> [a] -> [a]} tal que (interseccao xs ys) é a interseccao dos conjuntos xs e ys. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+interseccao [3,2,5] [5,7,3,4] == [3,5]
+\end{lstlisting}
+
+\item \texttt{diferenca :: Eq a => [a] -> [a] -> [a]} tal que (diferenca xs ys) é a diferença entre os conjuntos xs e ys. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+diferenca [3,2,5,6] [5,7,3,4] == [2,6]
+diferenca [3,2,5] [5,7,3,2] == []
+\end{lstlisting}
+
+\item Escreva uma função diamonds que receba como argumento um valor inteiro positivo
+n e retorne uma lista de listas $[l_1, l_2, \ldots, l_{n-1}, l_n, l_{n-1}, \ldots, l_2, l_1]$,
+onde $l_i$ é a lista dos i múltiplos de i (sendo i o primeiro múltiplo de i).
+
+Exemplo:
+
+\begin{lstlisting}[language=Haskell]
+diamonds 2 [[1],[2,4],[1]]
+diamonds 3 [[1],[2,4],[3,6,9],[2,4],[1]]
+diamonds 4 [[1],[2,4],[3,6,9],[4,8,12,16],[3,6,9],[2,4],[1]]
+\end{lstlisting}
+
+\item A função \texttt{aplica :: [a -> a] -> a -> [a]} recebe uma lista de funções e um valor retornando uma lista com os resultados das aplicações das funções. Por exemplo,
+
+\texttt{aplica [(*4), (+2), (-4)] 2 == [8,4,-2]}
+
+\item Um trio (x, y, z) de inteiros positivos diz-se pitagórico se $x^2 + y^2 = z^2$.
+Defina a função \texttt{pitagoricos :: Int -> [(Int, Int, Int)]} que calcule todos os trios
+pitagóricos cujas componentes não ultrapassem o argumento.
+
+Por exemplo: \texttt{pitagoricos 10 = [(3, 4, 5), (4, 3, 5), (6, 8, 10), (8, 6, 10)]}.
+
+\item Os polinômios podem ser representados da forma dispersa ou densa. Por exemplo, o polinômio $6x^4 - 5x^2 + 4x - 7$
+pode ser representado da forma dispersa por [6,0,-5,4,-7] e da forma densa [(6,4), (-5, 2), (4, 1), (-7, 0)]. Defina uma função
+\texttt{densa :: [Int] -> [(Int,Int)]} tal que densa xs é a representação densa do polinômio cuja representação dispersa é xs. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+densa [6,0,-5,4,-7] == [(4,6),(2,-5),(1,4),(0,-7)]
+densa [6,0,0,3,0,4] == [(5,6),(2,3),(0,4)]
+\end{lstlisting}
+
+\item Defina a função neglist xs que computa o número de
+elementos negativos em uma lista xs.
+
+\begin{lstlisting}[language=Haskell]
+neglist [1,2,3,4,5] == 0
+neglist [1,-3,-4,3,4,-5] == 3
+\end{lstlisting}
+
+\item Defina uma função \texttt{gensquares low high} que gera
+uma lista de todos os quadrados de todos os
+números pares a partir de um limite inferior low
+até um limite superior high.
+
+\begin{lstlisting}[language=Haskell]
+gensquares 2 5 == [4,16]
+gensquares 3 10 == [16,36,64,100]
+\end{lstlisting}
+
+
+\end{enumerate}
+
+
+\item
+Considere a seguinte série (i.e. somas infinitas) que convergem para $\pi$:
+
+\begin{equation}
+\pi = \frac{4}{1} - \frac{4}{3}  + \frac{4}{5} - \frac{4}{7} + \ldots
+\end{equation}
+
+\begin{enumerate}
+
+\item Construa uma lista infinita com os numerados das parcelas.
+
+$[4,-4,\ldots,4(-1)^n]$
+
+\item Construa uma lista infinita com os denominadores das parcelas.
+
+\item Combine as duas listas usando a função \texttt{zipWith}.
+
+\item Defina a função \texttt{calcPi1} n que calcula o valor de pi somando n parcelas da série. Calcule o valor o somatório para 10, 100 e 1000 parcelas.
+
+\end{enumerate}
+
+
+\begin{enumerate}
+
+\item
+Escreva uma função binom com dois argumentos que calcule o coeficiente
+
+\begin{equation}
+{n \choose k} = \frac{n!}{k!(n-k)!}
+\end{equation}
+
+Sugestão: pode exprimir n! como product [1..n]
+
+
+\item
+Usando uma função binom que calcula o coeficiente binomial, escreva uma definição da função \texttt{pascal :: Int -> [[Int]]} que calcula as
+primeiras linhas triângulo de Pascal.
+
+
+\begin{center}
+\begin{tikzpicture}
+\foreach \n in {0,...,3} {
+  \foreach \k in {0,...,\n} {
+    \node at (\k-\n/2,-\n) {${\n \choose \k}$};
+  }
+}
+\end{tikzpicture}
+\end{center}
+
+
+
+\texttt{pascal 4 == [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+}
+
+\item defina o triângulo de Pascal completo como uma lista infinita \texttt{pascal2 :: [[Int]]} das linhas do triângulo. Note que que \texttt{pascal2 !! n !! k = binom n k}, para quaisquer n e k tais que $n \geq 0$ e $0 \leq k \leq n$.
+
+Exemplos:
+
+\texttt{pascal2 !! 6 == [1,6,15,20,15,6,1]}
+
+\texttt{pascal2 !! 6 !! 3 == 20}
+
+
+\end{enumerate}
+
+
+
+
+\end{enumerate}
+\end{document}	

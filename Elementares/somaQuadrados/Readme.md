@@ -1,4 +1,4 @@
-#somaQuadrados
+# somaQuadrados
 
 Defina a função `somaQuadrados` que recebe um inteiro `n` como argumento e devolve a soma dos quadrados dos primeiros n inteiros, ou seja,
 

@@ -1,0 +1,446 @@
+\documentclass[twocolumn,a4paper,7pt]{article}
+%\documentclass[a4paper,draft]{article}
+%\documentclass[a4paper]{article}
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{charter} % nova fonte
+\usepackage{indentfirst} % indenta o 1o parágrafo
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{multicol}
+\usepackage{listings}
+
+\setlength{\multicolsep}{4.0pt plus 2.0pt minus 1.5pt}% 50% of original values
+
+% unidade usada para desenhar as figuras
+\setlength{\unitlength}{1cm}
+%\linethickness{1.5pt}
+
+\newcommand{\remove}[1]{}%{#1}
+\newtheorem{theorem}{Teorema}
+
+% formatar margens quando utilizar 2 colunas
+%\addtolength{\evensidemargin}{-1.5cm}\addtolength{\oddsidemargin}{-1.5cm}\addtolength{\textwidth}{2.7cm}
+\addtolength{\evensidemargin}{-2cm}\addtolength{\oddsidemargin}{-2cm}\addtolength{\textwidth}{3.7cm}
+
+\addtolength{\topmargin}{-4.0cm}
+\addtolength{\textheight}{7.0cm}
+
+%\setlength{\parskip}{\baselineskip} % aumenta espaço entre parágrafos
+\setlength{\parskip}{0em}
+
+\hyphenpenalty=100000
+% convert probs_np_completos.gif probs_np_completos.eps
+% ps2pdf -sPAPERSIZE=a4 np.ps
+
+\begin{document}
+\title{Programação Funcional \\ Folha de Exercícios 07 \\ Entrada e Saída e Mônadas}
+\author{Prof. Wladimir Araújo Tavares }
+\date{}
+\maketitle
+%\tableofcontents
+
+%\tiny
+\scriptsize
+%\footnotesize
+%\small
+%\normalsize
+%\large
+%\Large
+%\LARGE
+%\huge
+%\Huge
+
+%\noindent
+%Aluno: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ $~~$ 20/02/2013 \\
+
+
+\textbf{Entrada e Saída}
+\begin{enumerate}\itemsep-.3em
+
+
+\item Escreva uma função \texttt{seq\_ :: [IO a] -> IO ()} que realiza uma lista de ações.
+
+\begin{lstlisting}[language=Haskell]
+Prelude> seq_ [print i | i <- [1..5]]
+1
+2
+3
+4
+5
+\end{lstlisting}
+
+
+\item Escreva uma função \texttt{elefantes :: Int -> IO ()} tal que, por exemplo, elefantes 5 imprime os seguintes versos:
+
+\begin{lstlisting}[language=Haskell]
+Se 2 elefantes incomodam muita gente,
+3 elefantes incomodam muito mais!
+Se 3 elefantes incomodam muita gente,
+4 elefantes incomodam muito mais!
+Se 4 elefantes incomodam muita gente,
+5 elefantes incomodam muito mais!
+\end{lstlisting}
+
+Sugestão: utilize a função \texttt{show :: Show a => a -> String} para converter um inteiro numa cadeia de caracteres; pode ainda reutilizar a função \texttt{seq\_ :: [IO a] -> IO ()} para executar uma lista de ações.
+
+\item
+Considere o seguinte programa:
+
+\begin{lstlisting}[language=Haskell]
+module Main where
+main
+	= do {
+	tests <- getLine;
+	contents <- getContents;
+	putStrLn $ show $take (read tests) (lines contents)
+	}
+\end{lstlisting}
+
+Modifique o programa para que ele leia um número natural n, e então leia outros n números e calcule e exiba a soma destes números.
+
+\item %1
+
+A função \texttt{interact :: (String -> String) -> IO ()} é muito utilizada para construir programas com entrada e saída simples. Considere o seguinte programa:
+
+\begin{lstlisting}[language=Haskell]
+module Main where
+main = interact (show.length.lines)
+\end{lstlisting}
+
+O programa acima imprime o número de linhas do arquivo de entrada.
+
+Faça um programa completo que lê linhas de texto da entrada-padrão e imprime cada linha invertida usando a função interact.
+
+Dica: Use as funções lines, unlines, map reverse.
+
+
+\item Escreva um programa completo que reproduza a funcionalidade do utilitário wc: ler um ficheiro de entrada e imprime o número de linhas, número de palavras e número de caracteres.
+
+\begin{lstlisting}[language=Haskell]
+$echo a maria tinha um cordeirinho | wc
+Linhas: 1
+Palavras: 5
+Caracteres: 29
+\end{lstlisting}
+
+Sugestão: Utilize as funções \texttt{words :: String -> [String]} e \texttt{lines :: String -> [String]}.
+
+\item Faça um programa que leia um número n e imprime n!
+
+\item Faça um programa que leia um número n e imprime ``sim'', se o número é primo e
+``nao'', caso contrário.
+
+\item Escreva a função \texttt{accumulate::[IO a] -> IO[a]}, que realiza uma lista
+de ações, acumulando o resultado dessas ações em uma lista. 
+
+\item Faça programa para que ele leia um número natural n, e então leia outros n
+números e calcule e exiba a soma destes números usando a função \texttt{accumulate}.    
+\end{enumerate}
+
+\textbf{Mônadas}
+
+\begin{enumerate}
+
+\item Mônadas são abstrações sobre construtores de tipos para os quais
+  podem ser definidas duas funções, {\it return\/} e {\tt (>>=)} com
+  determinados tipos e propriedades.
+
+  Em Haskell, vamos considerar que mônadas são instâncias da seguinte
+  classe:
+
+  {\tt \begin{tabbing} xx\=\kill
+     class {\it Monad\/} $m$ where\+\\
+       {\it return\/}:: $a$ -> $m$ $a$\\
+       (>>=):: $m$ $a$ -> ($a$ -> $m$ $b$) -> $m$ $b$
+ \end{tabbing} }
+
+  {\it return\/} recebe um valor e ``encaixota'' esse valor na
+  mônada. {\tt (>>=)} recebe um valor monádico (isto é, um valor
+  ``encaixotado'') e passa o resultado de desencaixotar o valor para o
+  segundo argumento, que retorna o resultado de aplicar o primeiro
+  valor, mas também encaixotado.
+
+  A visão de {\it IO\/} como uma mônada serve principalmente para
+  sequenciar ações de entrada e saída e garantir que toda ação de tipo
+  {\tt {\it IO\/} $a$}, para algum $a$, não possa ser
+  ``desencaixotada'' e vista como um valor de tipo $a$, a não ser como
+  resultado de operações de entrada e saída, usadas de modo sequencial
+  na mônada.
+
+  A instância de {\it Maybe\/} é dada a seguir:
+
+  {\tt \begin{tabbing} xx\=\kill
+  instance {\it Monad Maybe\/} where \+\\
+    {\it return\/} = {\it Just}\\
+    {\it Nothing\/}  \=>>= \_ = {\it Nothing}\\
+    {\it Just\/} $x$ \>>>= $f$ = $f$ $x$
+  \end{tabbing} }
+
+  Ou seja, {\it Nothing\/} é propagado sempre que ocorre (como um caso
+  de falha), e {\it Just\/} serve como uma caixa para um valor: {\tt
+    (>>=)} recebe um valor dentro da caixa e aplica a função passada
+  como segundo argumento a esse valor.
+
+  Um equilibrista está treinando equilibrismo na sua fazenda: ele anda
+  sob uma corda esticada segurando uma longa barra de madeira. O
+  problema maior que ele enfrenta é quando pássaros pousam na barra, e
+  o número de pássaros que pousam de um lado da barra é quatro a mais
+  do que os que pousam do outro lado. Sempre que isso ocorre, ele se
+  desequilibra e cai.
+
+  Vamos simular pássaros usando inteiros e a barra de madeira por um
+  par de pássaros que estão pousados em cada lado da barra, esquerdo e
+  direito:
+
+  {\tt \begin{tabbing}
+         type {\it Passaros\/} \== Int\\
+         type {\it Barra\/}    \>= ({\it Passaros}, {\it Passaros\/})
+  \end{tabbing} }
+
+  Para simular o pouso de pássaros na barra, no lado esquerdo e
+  direito, vamos usar respectivamente as duas funções a seguir:
+
+  {\tt \begin{tabbing} xx\=\kill
+     {\it pousoEsq\/}:: {\it Passaros\/} -> {\it Barra\/} -> {\it Maybe Barra}\\
+     {\it pousoEsq\/} $n$ ({\it esq},{\it dir\/}) \+\\
+       | {\it abs\/} (({\it esq\/} + $n$) - {\it dir\/}) < 4 \== {\it Just\/} ({\it esq\/} + $n$, {\it dir\/}) \\
+       | {\it otherwise\/}                                   \>= {\it Nothing}\-\\ \\
+
+     {\it pousoDir\/} $n$ ({\it esq},{\it dir\/}) \+\\
+       | {\it abs\/} ({\it esq\/} - ({\it dir\/}+$n$)) < 4 \== {\it Just\/} ({\it esq}, {\it dir\/}+$n$) \\
+       | {\it otherwise\/}                                 \>= {\it Nothing}
+  \end{tabbing} }
+
+   Usando a função {\tt >>=} da mônada {\it Maybe}, podemos simular o
+   pouso de pássaros na barra sem ter que ficar testando casos de
+   falha explicitamente no código. Por exemplo:
+
+   {\tt {\it return\/} (0,0) >>= {\it pousoDir\/} 2 >>= {\it pousoEsq\/} 2 >>= {\it pousoDir\/} 2}
+
+   retorna {\tt {\it Just\/} (2,4)}.
+
+   E:
+
+   {\tt {\it return\/} (0,0) >>= {\it pousoEsq\/} 1 >>= {\it pousoDir\/} 4 >>= {\it pousoEsq\/} (-1) >>= {\it pousoDir\/} (-2)}
+
+   retorna {\it Nothing\/}: {\tt {\it return\/} (0,0)} retorna {\tt
+     {\it Just\/} (0,0)}, depois {\tt {\it pousoEsq\/} 1} retorna {\tt
+     {\it Just\/} (1,0)}, depois {\tt {\it pousoDir\/} 4} retorna {\tt
+     {\it Just\/} (1,4)}, mas {\tt {\it pousoEsq\/} (-1)} retorna {\it
+     Nothing\/}. E depois {\it Nothing\/} é ``propagado'', ou seja,
+   retornado como resultado de {\tt {\it Nothing\/} >>= {\it
+       pousoDir\/} (-2)}, pela definição de {\tt (>>=)} na mônada {\it
+     Maybe\/}.
+
+   Reescreva a função {\it rotina\/} a seguir, que trata casos de
+   falha explicitamente, usando a mônada {\it Maybe\/} de modo a
+   evitar os casos de tratamento explícito de falha:
+
+   {\tt \begin{tabbing}
+      {\it rotina\/}:: {\it Maybe Barra}\\
+      {\it rotina\/} = ca\=se {\it pousoEsq\/} 1 (0,0) of \+\\
+                   {\it Just barra1\/} \=\kill
+                   {\it Nothing\/}     \>-> {\it Nothing}\\
+                   {\it Just barra1\/} \>-> ca\=se {\it pousoDir\/} 4 {\it barra1\/} of \+\+\\
+                                        {\it Just barra2\/} \=\kill
+                                        {\it Nothing\/}     \>-> {\it Nothing}\\
+                                        {\it Just barra2\/} \>-> ca\=se {\it pousoEsq\/} 2 {\it barra2\/} of \+\+\\
+                                                             {\it Just barra3\/} \=\kill
+                                                             {\it Nothing\/}     \>-> {\it Nothing}\\
+                                                             {\it Just barra3\/} \>-> {\it pousoEsq\/} 1 {\it barra3}
+   \end{tabbing} }
+
+
+    Escreva uma função \texttt{rotina :: Barra -> [Pouso] -> Maybe Barra} que recebe uma barra e uma lista de pousos e devolve uma Maybe Barra.
+
+\begin{lstlisting}[language=Haskell]
+
+data Pos = Esq | Dir deriving (Eq,Show)
+type Pouso = (Pos, Passaros)
+
+b1 = (0,0) :: Barra					
+p1 = (Esq, 2) :: Pouso
+p2 = (Dir, 4) :: Pouso
+sq = [p1,p2]
+rotina :: Barra -> [Pouso] -> Maybe Barra
+rotina b1 sq == Just (2,4)
+\end{lstlisting}
+
+
+\item Seja
+
+\begin{lstlisting}[language=Haskell]
+data Expr = Number Integer | Neg Expr |
+Plus Expr Expr | Minus Expr Expr | Times Expr Expr |
+Div Expr Expr | Mod Expr Expr
+\end{lstlisting}
+
+\begin{enumerate}
+
+\item Escreva a função \texttt{eval1 :: Expr -> Maybe Integer} que avalia uma expressão. O valor Nothing deve ser retornado
+no caso de uma divisão por zero.
+
+\item Escreva a função \texttt{eval2 :: Expr -> [Integer]} que avalia uma expressão. O valor [] deve ser retornado
+no caso de uma divisão por zero.
+
+\item Generalize essa função para \texttt{eval3 :: Monad m => Expr -> m Integer} que usa uma
+mônada arbitrária (use return no lugar de Just e fail "Divisao por zero" no lugar de Nothing).
+
+\end{enumerate}
+
+\item Defina o operador \texttt{(!?):: [a] -> Int -> Maybe a} tal que \texttt{xs !? n} retorna o n-ésimo elemento da lista caso
+ele exista. Caso contrário, retorne Nothing. A função \texttt{(!?)} é o operador seguro de índice (A versão segura do operador !!).
+
+\item Defina a função \texttt{swap :: Int -> Int -> [a] -> Maybe [a]} que recebe dois índices de uma lista e troca os elementos destes
+índices em uma lista. Se os índices estão fora dos limites da lista retorne Nothing. Caso contrário, retorne
+a lista com os índices trocados.
+
+\item A função mapM mapeia uma função monádica sobre uma lista.
+
+\texttt{mapM :: Monad m => (a -> m b) -> [a] -> m [b] }
+
+Exemplo: \texttt{mapM Just [1..10] == Just [1..10]}
+
+Use mapM para definir uma função
+
+\texttt{getElts :: [Int] -> [a] -> Maybe [a]}
+
+que recebe uma lista de índices e uma lista e retorna uma lista dos elementos dos índices em
+uma mônada Maybe. Se algum dos índices não existe, a função deve retorna Nothing. Use o operador de índice definido por você (!?).
+
+\item
+Considere o seguinte programa em Haskell:
+
+\begin{lstlisting}[language=Haskell]
+type Person = String
+type Family = [(Person,Person,Person)]
+
+p1 = "Bart Simpsons"
+p2 = "Lisa Simpsons"
+p3 = "Marge Simpsons"
+p4 = "Homer Simpsons"
+p5 = "Maggie Simpsons"
+p6 = "Abraham Simpsons"
+p7 = "Mona Simpsons"
+p8 = "Ned Flanders"
+p9 = "Maude Flanders"
+p10 = "Rod Flanders"
+p11 = "Todd Flanders"
+
+f = [(p4,p3,p1),
+     (p4,p3,p2),
+     (p4,p3,p5),
+     (p6,p7,p4),
+     (p8,p9,p10),
+     (p8,p9,p11)]
+\end{lstlisting}
+
+\begin{enumerate}
+\item Faça a função \texttt{father :: Family -> Person -> Maybe Person} que dado uma pessoa retorne o pai da pessoa se existir na família f.
+\item Faça a função \texttt{mother :: Family -> Person -> Maybe Person} que dado uma pessoa retorne a mãe da pessoa se existir na família f.
+\item Faça a função \texttt{paternalgrandfather :: Family -> Person -> Maybe Person} que dado uma pessoa retorne o avô paterno da pessoa se existir na família f.
+\item Faça a função \texttt{paternalgrandmother :: Family -> Person -> Maybe Person} que dado uma pessoa retorne a avó paterno da pessoa se existir na família f.
+\item Faça a função \texttt{bothGrandfathers :: Person -> Maybe (Person, Person)} que dado uma pessoa retorna os dois avôs paternos da pessoa se existir na família f.
+\end{enumerate}
+
+\item Considere o seguinte programa em Haskell:
+\begin{lstlisting}[language=Haskell]
+data Graph = Graph [Int] [(Int,Int)]
+
+search :: Graph v e -> Int -> Int -> Maybe [Int]
+search g@(Graph vl el) src dst
+    | src == dst = Just [src]
+    | otherwise = search' el
+        where search' [] =
+        search' ((u,v):es)
+        | src == u =
+                    case search g v dst of
+                    Just p ->
+                    Nothing ->
+        | otherwise =
+\end{lstlisting}
+
+Complete o programa acima.
+
+\begin{lstlisting}[language=Haskell]
+gr = Graph [0, 1, 2, 3] [(0,1), (0,2), (1,3), (2,3)]
+searchAll gr 0 3 :: Maybe [Int] == Just [0,1,3]
+\end{lstlisting}
+
+
+\item A classe {\it Functor\/} é usada em Haskell para permitir a
+  generalização da função {\it map\/} para outros construtores de tipo
+  além de listas. Para que mensagens de erro mais simples possam ser
+  mais facilmente emitidas no caso de listas, {\it map\/} é chamada de
+  {\it fmap\/} no caso geral.
+
+  {\tt \begin{tabbing} xx\=\kill
+        class {\it Functor\/} $f$ where\+\\
+          {\it fmap\/}:: ($a$ -> $b$) -> $f$ $a$ -> $f$ $b$
+       \end{tabbing}
+  }
+
+  Note: $f$ é uma variável que deve ser instanciada para um construtor
+  de tipo (por exemplo, para {\tt []}, {\it Maybe\/}, {\it Tree\/},
+  {\it IO\/}), não para um tipo. Por exemplo, {\tt []} pode ser
+  definida como uma instância de {\it Functor\/} como a seguir:
+
+  {\tt \begin{tabbing} xx\=\kill
+        instance {\it Functor\/} [] where\+\\
+          {\it fmap\/} = {\it map\/}
+       \end{tabbing}
+  }
+
+  Com essa definição de instância, podemos usar {\it fmap\/} do mesmo
+  modo como {\it map\/}, em listas de qualquer tipo.
+
+  Tipos que ``encaixotam'' valores podem ser vistos como funtores:
+  {\it fmap\/} pega uma função e uma caixa para valores de tipo $a$,
+  aplica essa função aos valores desencaixotados e encaixota os
+  valores de tipo $b$ obtidos pela aplicação da função.
+
+  Outro exemplo de instância de {\it Functor\/} é do construtor {\it
+    Maybe\/}:
+
+  {\tt \begin{tabbing} xx\=\kill
+        instance {\it Functor\/} {\it Maybe\/} where\+\\
+          {\it fmap\/} $f$ ({\it Just\/} $x$)  \== {\it Just\/} ($f$ $x$)\\
+          {\it fmap\/} $f$ {\it Nothing}       \>= {\it Nothing\/}
+       \end{tabbing}
+  }
+
+  Com essa definição de instância, podemos usar {\it fmap\/} sobre
+  valores construídos com {\it Maybe\/}:
+
+  {\tt \begin{tabbing} xx\=\kill
+         {\it fmap\/} (++ \symbol{34}def\symbol{34}) ({\it Just\/} \symbol{34}abc\symbol{34})
+       \end{tabbing}
+  }
+
+  obtemos:
+
+  {\tt {\it Just\/} \symbol{34}abcdef\symbol{34}}
+
+  
+  \begin{enumerate}
+
+    \item Considere o tipo: {\tt data {\it Tree\/} $a$ = {\it Leaf\/} | {\it Node\/} $a$ ({\it Tree\/} $a$) ({\it Tree\/} $a$)}
+     Defina uma instância de {\it Functor\/} para {\it Tree\/} de
+      modo que possamos usar {\it fmap\/} para árvores como usamos
+      {\it map\/} para listas.
+    \item Considere o tipo: {\tt data {\it MultiTree\/} $a$ = {\it Folha\/} | {\it No\/} $a$ [{\it Tree\/} $a$]}
+     Defina uma instância de {\it Functor\/} para {\it MultiTree\/} de
+      modo que possamos usar {\it fmap\/} para árvores como usamos
+      {\it map\/} para listas.
+
+  \end{enumerate}
+
+
+\end{enumerate}
+
+
+\end{document}	

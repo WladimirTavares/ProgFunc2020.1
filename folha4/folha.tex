@@ -1,0 +1,386 @@
+\documentclass[twocolumn,a4paper,7pt]{article}
+%\documentclass[a4paper,draft]{article}
+%\documentclass[a4paper]{article}
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{charter} % nova fonte
+\usepackage{indentfirst} % indenta o 1o parágrafo
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{multicol}
+\usepackage{listings}
+
+\setlength{\multicolsep}{4.0pt plus 2.0pt minus 1.5pt}% 50% of original values
+
+% unidade usada para desenhar as figuras
+\setlength{\unitlength}{1cm}
+%\linethickness{1.5pt}
+
+\newcommand{\remove}[1]{}%{#1}
+\newtheorem{theorem}{Teorema}
+
+% formatar margens quando utilizar 2 colunas
+%\addtolength{\evensidemargin}{-1.5cm}\addtolength{\oddsidemargin}{-1.5cm}\addtolength{\textwidth}{2.7cm}
+\addtolength{\evensidemargin}{-2cm}\addtolength{\oddsidemargin}{-2cm}\addtolength{\textwidth}{3.7cm}
+
+\addtolength{\topmargin}{-4.0cm}
+\addtolength{\textheight}{7.0cm}
+
+%\setlength{\parskip}{\baselineskip} % aumenta espaço entre parágrafos
+\setlength{\parskip}{0em}
+
+\hyphenpenalty=100000
+% convert probs_np_completos.gif probs_np_completos.eps
+% ps2pdf -sPAPERSIZE=a4 np.ps
+
+\begin{document}
+\title{Programação Funcional \\ Folha de Exercícios 04 \\ Lazy Evalution }
+\author{Prof. Wladimir Araújo Tavares }
+\date{}
+\maketitle
+%\tableofcontents
+
+%\tiny
+\scriptsize
+%\footnotesize
+%\small
+%\normalsize
+%\large
+%\Large
+%\LARGE
+%\huge
+%\Huge
+
+%\noindent
+%Aluno: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ $~~$ 20/02/2013 \\
+
+\begin{enumerate}\itemsep-.3em
+
+\item A função \texttt{foldl :: (a -> b -> a) -> a -> [b] -> a}  é tal que
+(\texttt{foldl f z xs}) devolve o resultado da aplicação sucessiva de f usando como primeiro argumento da função f, o valor z na primeira a aplicação e o resultado da aplicação anterior nas outras aplicações; como segundo argumento de f, os valores
+da lista xs a partir da esquerda.  Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+foldl (/) 64 [4,2,4]  == ( ( ( 64 / 4 ) / 2 ) / 4 ) == 2.0
+\end{lstlisting}
+
+A definição recursiva de foldl é:
+
+\begin{lstlisting}[language=Haskell]
+foldl f z [ ] = z
+foldl f z (x : xs) = foldl f (f z x ) xs
+\end{lstlisting}
+
+A função \texttt{scanEsq} guarda o resultado das aplicações sucessivas realizadas por \texttt{foldl}.
+
+\begin{enumerate}
+
+\item Defina função \texttt{scanEsq :: (b -> a -> b) -> b -> [a] -> [b]}
+tal que (\texttt{scanEsq f z xs}) é uma lista
+de sucessivas aplicações da função $f$ com os valores da
+lista xs a partir da esquerda. Por exemplo,
+
+\texttt{scanEsq 64 (/) [4,2,4] = [64.0, 16.0, 8.0, 2.0]}
+
+\end{enumerate}
+
+\item Use a função \texttt{scanEsq} para definir a lista infinita \texttt{fatorialLista :: [Int]}
+definida da seguinte maneira:
+
+\texttt{fatorialLista = [1!, 2!, 3!, 4!, 5!, ...]}
+
+\item Use a lista infinita fatorialLista, para definir a função \texttt{fatorial :: Int -> Int} tal que
+\texttt{fatorial n} é n!.
+
+\item O número $e$ pode ser calculado por meio da série de Taylor como a soma da seguinte série infinita:
+
+\begin{equation}
+e = \sum_{n = 0}^{\infty} \frac{1}{n!} = \frac{1}{0!} + \frac{1}{1!} + \frac{1}{2!} + \ldots
+\end{equation}
+
+\begin{enumerate}
+\item Crie uma lista infinita \texttt{parcelas :: [Double]} com as parcelas da série infinita.
+
+\texttt{take 4 parcelas  == [1.0,1.0,0.5,0.16666666666666666] }
+
+\item Crie uma lista infinita \texttt{e :: [Double]} com as somas parciais da série infinita.
+
+\texttt{take 4 e == [1.0,2.0,2.5,2.6666666666666665]}
+
+\item Defina a funcão calcE n que calcula o valor de $e$ somando $n$ parcelas da série. Calcule o valor
+de $e$ para 10, 100, 1000 parcelas.
+
+\item O processo de soma de parcelas pode ser repetido várias vezes até que $e^(k)$ esteja muito próximo do valor $e^(k-1)$. Dada uma precisão $\epsilon$, o valor $x^k$ será escolhido como uma solução aproximada da solução exata se:
+
+\begin{enumerate}
+\item Erro absoluto: $|e^{(k)} - e^{(k-1)}| < \epsilon$
+
+\begin{lstlisting}[language=Haskell]
+absolutoE 0.01 == 2.7166666666666663
+absolutoE 0.0001 == 2.71827876984127
+\end{lstlisting}
+
+Dica: Crie uma lista infinita com os valores consecutivos de $e$ e remova os pares com o erro absoluto maior que $\epsilon$ usando a função \texttt{dropWhile}.
+
+\item Erro relativo: $|\frac{e^{(k)} - e^{(k-1)}}{e^{(k-1)}}| < \epsilon$
+
+\begin{lstlisting}[language=Haskell]
+relativoE 0.01   == 2.7166666666666663
+relativoE 0.0001 == 2.7182539682539684
+\end{lstlisting}
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+\item
+Considere a seguinte série (i.e. somas infinitas) que convergem para $\pi$:
+
+\begin{equation}
+\pi = \frac{4}{1} - \frac{4}{3}  + \frac{4}{5} - \frac{4}{7} + \ldots
+\end{equation}
+
+\begin{enumerate}
+\item Construa uma lista infinita com os numerados das parcelas.
+
+$[4,-4,\ldots,4(-1)^n]$
+
+\item Construa uma lista infinita com os denominadores das parcelas.
+
+\item Combine as duas listas usando a função \texttt{zipWith}.
+
+\item Defina a função \texttt{calcPi1} n que calcula o valor de pi somando n parcelas da série. Calcule o valor o somatório para 10, 100 e 1000 parcelas.
+
+\item Qual é o valor de pi considerando como critério de parada erro absoluto 0.01?
+
+\item Qual é o valor de pi considerando como critério de parada erro relativo 0.01?
+
+\end{enumerate}
+
+
+
+
+\item A lista infinita de números naturais \texttt{[1,2,3,4,..]} , \texttt{naturais :: [Int]}, pode ser definida de várias maneiras em Haskell:
+
+
+\texttt{naturais = [1..]}
+
+\texttt{naturais = 1 : zipWith (+) naturais [1,1..]}
+
+\texttt{naturais = scanEsq (+) 1 [1,1..]}
+
+\texttt{naturais = 1 : [ x+y | (x,y) <- zip naturais [1,1..] ]}
+
+Os números triangulares são os números da seguinte forma $T_0 = 0$ e $T_n = T_{n-1} + n$ . Defina uma lista infinita dos números triangulares
+\texttt{triangular :: [Int]}. Por exemplo,
+
+\texttt{take 10 triangular == [0,1,3,6,10,15,21,28,36,45]}
+
+
+\item O fecho de Kleene é uma operação unária aplicada a conjuntos. A aplicação do fecho de Kleene num conjunto A é escrito como
+$A^*$. Se $A$ é um alfabeto de uma linguagem, então $A^*$ é o menor superconjunto de A que contém $\epsilon$ (string vazia)
+e e fechado para operação de concatenação. $A^*$ também pode ser descrito como o conjunto
+de todos os elementos que podem ser formados através da concatenação de zero ou mais elementos de $A$.
+
+O fecho de Kleene pode ser definido recursivamente da seguinte
+maneira:
+
+\begin{center}
+\begin{tabular}{lll}
+$A_0     $ & = &  $\{ \epsilon \}$\\
+$A_{i+1} $ & = &  $\{ wv : w \in A_{i}, v \in A\}$\\
+\end{tabular}
+\end{center}
+
+Logo,
+
+\begin{center}
+$A^* = \bigcup_{i=0}^{\infty} A_i = A_0 \cup A_1 \cup \ldots$
+\end{center}
+
+Defina a função \texttt{kleene :: [a] -> [[a]]} tal que (\texttt{kleene xs}) devolve o fecho de Kleene do conjunto xs. Por exemplo,
+
+\texttt{take 12 (kleene "01") == ["","0","1","00","01","10","11","000","001",
+"100","101","010"]}
+
+\texttt{take 20 (kleene "01") ==["","0","1","00","01","10","11","000","001",
+"100","101","010","011","110","111","0000","0001","1000","1001","0100"]}
+
+\item Defina a função \texttt{repete :: a -> [a]} tal que (repete x) é uma lista
+infinita cujos elementos são x. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+repete 5 = [5,5,5,5,...
+take 3 repete 5 = [5,5,5]
+\end{lstlisting}
+
+\begin{enumerate}
+\item Defina usando compreensão de listas
+\item Defina usando a definição recursiva de lista
+\end{enumerate}
+
+\item Defina a função \texttt{ciclo :: [a] -> [a]} tal que (ciclo xs)
+repete infinitamente da lista xs. Por exemplo,
+
+ciclo [1,2] = [1,2,1,2,1,2,1,2,...
+
+\item Defina, por compreensão, a função \texttt{eco :: [a] -> [a]} tal que \texttt{eco xs} é uma lista obtida a partir da lista xs
+repetindo cada elemento o número de vezes indicada pela sua posição. O primeiro elemento é repetido 1 vez, o segundo 2 vezes
+e assim sucessivamente. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+eco "abcd" == "abbcccdddd"
+take 6 (eco [1..]) = [1,2,2,3,3,3]
+\end{lstlisting}
+
+\item Defina a função \texttt{itera :: ( a->a ) -> a -> [a]}
+tal que (\texttt{itera f x}) é uma lista cujo primeiro elemento é x
+e os seguintes são obtidos aplicando a função f ao elemento
+anterior, ou seja,
+
+\begin{lstlisting}[language=Haskell]
+[x, f x, f (f x), f (f x), ...]
+\end{lstlisting}
+
+Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+itera (+1) 3 == [3,4,5,6,7,8,9,...
+itera (*2) 1 == [1,2,4,8,16,32,...
+\end{lstlisting}
+
+\begin{enumerate}
+\item Defina por compreensão de listas infinitas.
+\item Defina por recursão em listas infinitas.
+\end{enumerate}
+
+\item Defina a função \texttt{potenciaIterada :: Int -> (a -> a) -> a -> a}
+tal que (\texttt{potenciaIterada n f x}) é o resultado
+de aplicar n vezes a função f ao valor x. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+potenciaIterada 3 (*10) 5 == 5000
+potenciaIterada 4 (+10) 5 == 45
+\end{lstlisting}
+
+Use a função \texttt{take :: Int -> [a] -> [a]} e \texttt{iterate :: (a->a) -> a -> [a]}.
+
+\item Defina a função \texttt{paresOrdenados :: [a] -> [(a,a)]}
+tal que (\texttt{paresOrdenados xs}) é uma lista de todos os pares
+de elementos $(x,y)$ de $xs$ tal que $x$ aparece em $xs$ antes de $y$.
+Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+paresOrdenados [3,2,5,4] == [(3,2),(3,5),(3,4),(2,5),(2,4),(5,4)]
+paresOrdenados [3,2,5,3] == [(3,2),(3,5),(3,3),(2,5),(2,3),(5,3)]
+\end{lstlisting}
+
+
+
+\item Considere o seguinte algoritmo que gera uma sequência de inteiros. Comece com um inteiro positivo n. Se
+n é par, divida por 2. Se n é ímpar, multiplique por 3 e some 1. Repita o processo com o novo valor de n,
+o processo termina quando n = 1. Por exemplo, comece com n = 6,
+
+\texttt{[6, 3, 10, 5, 16, 8, 4 , 2, 1]}
+
+Esta sequência é conhecida como sequência Collatz. Uma conjectura bastante conhecida defende
+que este algoritmo de fato  termina para todo n positivo.
+
+\begin{enumerate}
+
+\item Defina a funcao \texttt{seguinte :: Integer -> Integer} tal que
+seguinte n é o próximo número obtido na sequência de Collatz.
+
+\item Defina a funcão \texttt{Collatz :: Integer -> [Integer]}
+tal que collatz n é a sequência de Collatz obtida comecando
+com o valor n usando a função \texttt{itera}. Por exemplo,
+
+\texttt{collatz 13 = [13,40,20,10,5,16,8,4,2,1]}
+
+
+\end{enumerate}
+
+\item A função \texttt{digitos :: Integer -> [Integer]}, dado um número $n$, devolve uma lista com os dígitos de $n$ . Ela
+pode ser definida da seguinte maneira:
+
+\texttt{digitos n = [ read [x] :: Int | x <- show n] }
+
+A função \texttt{show :: Show a => a -> String} devolve a representação
+em \texttt{String} de um tipo \texttt{Show a} e a função \texttt{read :: Read a => String -> a}
+dada uma representação em \texttt{String} converte para um tipo \texttt{Read a}.
+
+\begin{enumerate}
+\item Defina a função \texttt{listaInteger :: [Integer] -> Integer} tal que
+(\texttt{listaInteger xs}) é o número formado pelos dígitos da lista
+xs usando a read e show. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+listaInteger [5]       == 5
+listaInteger [1,3,4,7] == 1347
+listaInteger [0,0,1]   == 1
+\end{lstlisting}
+
+\item Defina a função \texttt{juntaNumero :: Integer -> Integer -> Integer}
+tal que \texttt{juntaNumero x y} é o numero resultante de "concatenar"
+os digitos dos dois números $x$ e $y$. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+juntaNumero 12 987 == 12987
+juntaNumero 1204 7 == 12047
+\end{lstlisting}
+
+\item Defina a função \texttt{inverso :: Integer -> Integer} tal que
+inverso $n$ é o número obtido escrevendo os
+dígitos de $n$ em ordem inversa. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+inverso 42578 == 87524
+inverso 203   == 302
+\end{lstlisting}
+
+
+\end{enumerate}
+
+
+
+\item Defina, por compreensão, a lista dos números inteiros
+\texttt{inteiros :: [Int]} tal que inteiro é uma lista obtida
+pela enumeração do números inteiros. Por exemplo,
+
+\texttt{take 10 inteiros == [0,-1,1,-2,2,-3,3,-4,4,-5]}
+
+Dica: use a função \texttt{concat :: [[a]] -> [a]}  que concatena
+uma lista de listas.
+
+\item Defina a função \texttt{divisoresEm :: Int -> [Int] -> Bool}
+tal que (\texttt{divisoresEm x ys}) verifica se $x$ pode ser
+expresso por fatores em $ys$. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+divisoresEm 12 [2,3,5] == True   (12 = 2*2*3)
+divisoresEm 14 [2,3,5] == False  (14 = 2*7)
+\end{lstlisting}
+
+
+\item Defina a função \texttt{intercala :: a -> [a] -> [[a]]}
+tal que (\texttt{intercala x ys}) é uma lista de listas obtidas
+intercalando x entre os elementos de ys. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+intercala 1 [2,3] == [[1,2,3], [2,1,3], [2,3,1]]
+\end{lstlisting}
+
+\item Defina a função \texttt{permutacao :: [a] -> [[a]]} tal que
+\texttt{permutacao xs} é uma lista de todas as permutações da lista xs usando
+a função intercala.
+Por exemplo,
+
+\texttt{permutacoes "abc" == ["abc","bac","bca","acb","cab","cba"]}
+
+\end{enumerate}
+
+\end{document}	

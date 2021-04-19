@@ -1,0 +1,300 @@
+\documentclass[twocolumn,a4paper,7pt]{article}
+%\documentclass[a4paper,draft]{article}
+%\documentclass[a4paper]{article}
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{charter} % nova fonte
+\usepackage{indentfirst} % indenta o 1o parágrafo
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{multicol}
+\usepackage{listings}
+
+\setlength{\multicolsep}{4.0pt plus 2.0pt minus 1.5pt}% 50% of original values
+
+% unidade usada para desenhar as figuras
+\setlength{\unitlength}{1cm}
+%\linethickness{1.5pt}
+
+\newcommand{\remove}[1]{}%{#1}
+\newtheorem{theorem}{Teorema}
+
+% formatar margens quando utilizar 2 colunas
+%\addtolength{\evensidemargin}{-1.5cm}\addtolength{\oddsidemargin}{-1.5cm}\addtolength{\textwidth}{2.7cm}
+\addtolength{\evensidemargin}{-2cm}\addtolength{\oddsidemargin}{-2cm}\addtolength{\textwidth}{3.7cm}
+
+\addtolength{\topmargin}{-4.0cm}
+\addtolength{\textheight}{7.0cm}
+
+%\setlength{\parskip}{\baselineskip} % aumenta espaço entre parágrafos
+\setlength{\parskip}{0em}
+
+\hyphenpenalty=100000
+% convert probs_np_completos.gif probs_np_completos.eps
+% ps2pdf -sPAPERSIZE=a4 np.ps
+
+\begin{document}
+\title{Programação Funcional \\ Folha de Exercícios 02 \\ Recursão}
+\author{Prof. Wladimir Araújo Tavares }
+\date{}
+\maketitle
+%\tableofcontents
+
+%\tiny
+\scriptsize
+%\footnotesize
+%\small
+%\normalsize
+%\large
+%\Large
+%\LARGE
+%\huge
+%\Huge
+
+%\noindent
+%Aluno: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ $~~$ 20/02/2013 \\
+
+\begin{enumerate}\itemsep-.3em
+
+\item %1
+Quais são os tipos das seguintes funções:
+
+\begin{enumerate}
+
+\item
+\begin{lstlisting}[language=Haskell]
+remove x [] = []
+remove x (y:ys) = if x == y then ys else y: (remove x ys)
+\end{lstlisting}
+
+\texttt{remove :: Eq a => a -> [a] -> [a]}
+
+\item
+\begin{lstlisting}[language=Haskell]
+partes [] = [ [] ]
+partes (x:xs) = [ x:y | y <- partes xs] ++ partes xs					
+\end{lstlisting}
+
+\item
+\texttt{rota n xs = drop n xs ++ take n xs}
+
+\item
+\texttt{swap (x,y) = (y,x)}
+
+\item
+\texttt{twice f x = f (f x)}
+
+\end{enumerate}
+
+\item Explique o que cada função da questão anterior faz?
+
+\item
+Defina cada uma das seguintes funções usando apenas funções pré-definidas em Haskell:
+
+\begin{enumerate}
+\item \texttt{prodIntervalo :: Int -> Int -> Int} que, dados dois valores inteiros n e m, retornar o produto de todos
+os valores inteiros entre n e m (inclusive). Por exemplo,
+
+\texttt{prodIntervalo 2 5 == $\Pi_{i=2}^{5} i$ == 2 * 3 * 4 * 5 == 120}
+
+Dica: Use a função product.
+
+\item \texttt{somaIntervalo :: Int -> Int -> Int} que, dados dois valores inteiros n e m, retornar o produto de todos
+os valores inteiros entre n e m (inclusive). Por exemplo,
+
+\texttt{somaIntervalo 2 5 == $\sum_{i=2}^{5} i$ == 2 + 3 + 4 + 5 == 14}
+
+Dica: Use a função sum.
+
+\item Defina a função \texttt{metades :: [a] -> ([a],[a])} tal que (metades xs) é formada pelo par formado por duas listas obtida pela divisão de xs em que a cardinalidade das listas diferem no máximo em um.
+
+\texttt{metades [2,3,5,7,9] == ([2,3],[5,7,9])}
+
+Dica: Use a função \texttt{splitAt :: Int -> [a] -> ([a], [a])}
+
+
+
+\end{enumerate}
+
+
+
+\item Defina cada uma das seguintes funções usando recursão:
+
+\begin{enumerate}
+  \item Defina a função \texttt{potencia :: Integer -> Integer -> Integer} tal que (potencia x n) é x elevado ao número natual n. Por exemplo,
+
+      \texttt{potencia 2 3 == 8}
+
+  \item Defina a função \texttt{elemento :: Eq a => a -> [a] -> Bool} tal que (elemento x xs) verifica se x pertence a lista xs. Por exemplo,
+      \texttt{elemento 3 [2,3,5] == True}
+  \item Defina a função \texttt{seleciona :: Int -> [a] -> a} tal que (seleciona n xs) é o n-ésimo elemento de xs. Por exemplo,
+      \texttt{seleciona 2 [2,3,5,7] == 5}
+  \item Defina a função \texttt{refinada :: [Float] -> [Float]} tal que (refinada xs) é uma lista obtida intercalando dois elementos consecutivos de xs com a média aritmética deles. Por exemplo,
+\begin{lstlisting}[language=Haskell]
+refinada [2,7,1,8] == [2.0, 4.5, 7.0, 4.0, 1.0, 4.5, 8.0]
+refinada [2] == [2.0]
+refinada []  == []
+\end{lstlisting}
+
+\item Defina a função \texttt{merge :: [a] -> [a] -> [a]} tal que (merge xs ys) é uma lista ordenada obtida pela entrelaçamento de duas listas ordenadas xs e ys. Por exemplo,
+
+\texttt{merge [2,5,6] [1,3,4] == [1,2,3,4,5,6]}
+
+\item Usando a função merge e metades, escreva uma definição recursiva da função \texttt{mergesort :: Ord a => [a] -> [a]} que implementa o método merge sort :
+\begin{itemize}
+  \item uma lista vazia ou com um só elemento já está ordenada;
+  \item para ordenar uma lista com dois ou mais elementos, partimos em duas metades, recursivamente ordenamos as duas parte e juntamos
+os resultados usando merge.
+\end{itemize}
+
+\item Defina uma função \texttt{ordenada :: Ord a => [a] -> Bool} tal que ordenada xs verifica se xs é uma lista ordenada. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+ordenada [2,3,5] == True
+ordenada [2,5,3] == False
+\end{lstlisting}
+
+\item
+\texttt{subconjunto :: Eq a => [a] -> [a] -> Bool} tal que (subconjunto xs ys) verifica xs é um subconjunto de
+ys. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+subconjunto [3,2,3] [2,5,3,5] == True
+subconjunto [3,2,3] [2,5,6,5] == False
+\end{lstlisting}
+
+Dica: use a função \texttt{elem :: a -> [a] -> Bool} verifica se um elemento pertence a uma lista.
+
+\item
+\texttt{union :: Eq a => [a] -> [a] -> [a]} tal que (union xs ys) é a união dos conjuntos xs e ys.
+Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+union [3,2,5] [5,7,3,4] == [3,2,5,7,4]
+\end{lstlisting}
+
+Dica: use a função \texttt{notElem :: a -> [a] -> Bool} verifica se um elemento não pertence a uma lista.
+
+\item \texttt{diferencia :: Eq a => [a] -> [a] -> [a]} tal que (diferencia xs ys) é a diferença entre os conjuntos xs e ys. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+diferencia [3,2,5,6] [5,7,3,4] == [2,6]
+diferencia [3,2,5] [5,7,3,2] == []
+\end{lstlisting}
+
+\item Defina a função \texttt{frequencia :: a -> [a] -> Int} tal que (\texttt{frequencia x xs}) devolve o número de ocorrências
+de x em u. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+frequencia 5 [4,5,2,1,5,5,9] == 3
+\end{lstlisting}
+
+
+\item Defina a função \texttt{unico :: Eq a => a -> [a] -> Bool} tal que (\texttt{unico x xs}) devolve True se x ocorre exatamente uma
+vez em u e False, caso contrário.
+
+\begin{lstlisting}[language=Haskell]
+unico 2 [1,2,3,2] == False
+unico 2 [3,1] == False
+unico 2 [2] == True
+\end{lstlisting}
+
+Dica: use a função \texttt{notElem :: Eq a => a -> [a] -> Bool}
+
+\item
+Dado uma lista de números inteiros, definiremos o maior salto como o maior valor das diferenças (em valor absoluto) entre números consecutivos da lista. Por exemplo, dada uma lista [2,5,-3,7]
+
+\begin{itemize}
+  \item 3 (valor absoluto de 2 - 5)
+  \item 8 (valor absoluto de 5 - (-3))
+  \item 10 (valor absoluto de -3 - 7)
+\end{itemize}
+
+Portanto o maior salto é 10. Não esta definido o maior salto para uma lista com menos de 2 elementos.
+Defina a função \texttt{maiorSalto :: [Integer] -> Integer} tal que maiorSalto xs é o maior salto da lista xs. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+maiorSalto [1,5] == 4
+maiorSalto [10,-10,1,4,20,-2] == 22
+\end{lstlisting}
+
+
+\item
+Considere um polinômio $P(X) = c_0 + c_1z + \ldots + c_nz^n$ representado
+pela lista dos seus coeficientes $[c0, c1, \ldots ; c_n]$. Podemos calcular o valor do
+polinômio num ponto de forma eficiente usando a forma de Horner :
+\begin{equation}
+P(z) = c0 + c_1z + \ldots + c_nz_n = c_0 + z * (c_1 + z * (\ldots +  z* (c_{n-1} + z * c_n) \ldots ))
+\end{equation}
+
+Note que usando a expressão não necessitamos de calcular potências: para
+calcular o valor dum polinômio de grau n usamos apenas n adições e n produtos.
+
+Complete a seguinte definição recursiva tal que horner cs z calcula o valor
+do polinômio com lista de coeficientes cs no ponto z usando a forma de Horner.
+
+\begin{lstlisting}[language=Haskell]
+horner :: [Double] -> Double -> Double
+horner [] z = 0
+horner (c:cs) z =
+\end{lstlisting}
+
+
+\item
+A função length, que computa o número de elementos de uma lista, pode ser definida do seguinte modo:
+
+\begin{lstlisting}[language=Haskell]
+length xs = length' 0 xs
+            where length' n [] = n
+length' n (x:xs) = length' (n+1) xs
+\end{lstlisting}
+
+Essa função usa a função auxiliar length', que possui um parâmetro adicional para acumular o resultado.
+A função \texttt{length'} é definida usando recursão de cauda, uma vez que a chamada recursiva \texttt{length' (n+1) xs}, usada no lado direito da definição, não ocorre dentro de nenhum argumento de outra função. Use essa técnica de recursão de cauda para definir as seguintes funções:
+
+\begin{enumerate}
+\item \texttt{fac :: Int -> Int}, que computa o fatorial de um número natural
+\item \texttt{reverse :: [a] -> [a]}, que inverte uma lista.
+\end{enumerate}
+
+\item Defina uma função \texttt{remove :: Eq a => a -> [a] -> [a]}
+tal que (\texttt{remove x xs}) devolve uma lista obtida
+removendo todas as ocorrências de x em xs. Por exemplo,
+
+\begin{lstlisting}[language=Haskell]
+remove 2 [1,2,5,2,4,3,2] == [1,5,4,3]
+\end{lstlisting}
+
+\item Defina uma função \texttt{unique :: Eq a => [a] -> [a]}
+tal que (\texttt{unique xs}) devolve uma lista com
+os elementos de xs sem repetições.
+
+\begin{lstlisting}[language=Haskell]
+unique [1,2,5,2,5,7,2,5] == [1,2,5,7]
+\end{lstlisting}
+
+\item Defina uma função \texttt{inserir :: Ord a => a -> [a] -> [a]}
+tal que (\texttt{inserir x xs}) devolve uma lista ordenada
+ascendentemente, oriunda da inserção apropriada de x em
+xs. Por exemplo,
+
+\texttt{inserir 3 [2,7,12]}
+\item
+Escreva uma função \texttt{permutations :: [a] -> [[a]]} para obter a lista com todas
+as permutações dos elementos uma lista. Assim, se xs tem comprimento n,
+então permutations xs tem comprimento n!.
+
+Exemplo: \texttt{permutations [1, 2, 3] = [[1, 2, 3], [2, 1, 3], [2, 3, 1], [1, 3, 2], [3, 1, 2], [3, 2, 1]]}
+
+Note que a ordem das permutações não é importante.
+
+\end{enumerate}
+
+
+
+\end{enumerate}
+
+\end{document}	
