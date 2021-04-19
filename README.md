@@ -11,6 +11,14 @@ de Listas](folha1/folha.pdf)
 * [Tipo Abstrato de Dados](folha6/folha.pdf)
 * [Entrada e Saı́da](folha7/folha.pdf)
 
+## Listas de Exercícios (Prof. Ricardo Reis)
+
+* [Lista 1](programacao_funcional_lista_1.pdf)
+* [Lista 2](programacao_funcional_lista_2.pdf)
+* [LIsta 3](programacao_funcional_lista_3.pdf)
+
+# Exercícos no Moodle
+
 ### Funções Elementares
 
 - [soma](Elementares/soma/Readme.md)
